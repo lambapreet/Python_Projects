@@ -6,26 +6,29 @@ def generate_password(length=12, use_uppercase=True, use_numbers=True, use_speci
     if length < 4:
         raise ValueError("Password length must be at least 4 characters.")
     
-    lower = string.ascii_lowercase
-    upper = string.ascii_uppercase if use_uppercase else ''
-    digits = string.digits if use_numbers else ''
-    special = string.punctuation if use_special else ''
+    characters = string.ascii_lowercase
+    if use_uppercase:
+        characters += string.ascii_uppercase
+    if use_numbers:
+        characters += string.digits
+    if use_special:
+        characters += string.punctuation
     
-    all_characters = lower + upper + digits + special
+    # all_characters = lower + upper + digits + special
     
-    if not all_characters:
+    if not characters:
         raise ValueError("At least one character type must be selected.")
     
     password = []
     
     if use_uppercase:
-        password.append(random.choice(upper))
+        password.append(random.choice(string.ascii_uppercase))
     if use_numbers:
-        password.append(random.choice(digits))
+        password.append(random.choice(string.digits))
     if use_special:
-        password.append(random.choice(special))
+        password.append(random.choice(string.punctuation))
         
-    password += random.choices(all_characters, k=length - len(password))
+    password += random.choices(characters, k=length - len(password))
     
     random.shuffle(password)
     
@@ -43,6 +46,7 @@ def main():
 
         password = generate_password(length, use_uppercase, use_numbers, use_special)
         print(f"\nGenerated Password: {password}")
+        
     except ValueError as e:
         print(f"Error: {e}")
 
